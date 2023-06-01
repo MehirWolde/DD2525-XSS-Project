@@ -1,0 +1,24 @@
+<div class="page-container">
+  <div class="page-half">
+    <form method="POST" action="/add">
+      <input
+        type="text"
+        name="item"
+        placeholder="Add a list item..."
+        class="input-field"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="page-half">
+    <h1>List items</h1>
+    <div>
+      <ul>
+        {{#each list}}
+          <li>{{{this}}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>
