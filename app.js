@@ -10,6 +10,17 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+const sanitizeHtml = require("sanitize-html");
+
+const sanitizeOptions = {       //these are the options for sanitizing html, we should make it more specific
+    allowedTags: ["b", "i", "em", "strong", "a"],
+    allowedAttributes: {
+        "a": ["href"]
+    },
+    allowedIframeHostnames: ["www.youtube.com"] //allow iframes with youtube videos
+}
+
+
 /* const crypto = require('crypto'); // nodejs package for generating random nonce values
 let nonce = crypto.randomBytes(16).toString('base64');
 
@@ -22,8 +33,10 @@ app.use((req, res, next) => {       // middleware using csp with nonce values fo
     next();
 }); */
 
+
 let listArr = [];
 let listResults = [];
+let querySearch = ""
 
 app.get("/", (req, res) => {
   res.render("main", { list: listArr });
@@ -31,13 +44,16 @@ app.get("/", (req, res) => {
 
 app.post("/add", (req, res) => {
   const item = req.body;
-  listArr.push(item);
+  cleanName = sanitizeHtml(item.name, sanitizeOptions);
+  cleanNote = sanitizeHtml(item.note, sanitizeOptions);
+  listArr.push({ name: cleanName, note: cleanNote});
   res.redirect("/");
 });
 
 app.get("/search", (req, res) => {
   if (req.query.q) {
-    res.render("search", { results: listResults, search: req.query.q, count: listResults.length });
+    query = sanitizeHtml(req.query.q, sanitizeOptions);
+    res.render("search", { results: listResults, search: query, count: listResults.length, querySearch: querySearch });
   } else {
     res.render("search");
   }
@@ -45,14 +61,17 @@ app.get("/search", (req, res) => {
 
 app.post("/search", (req, res) => {
     const { search, searchoption } = req.body;
+    cleanSearch = sanitizeHtml(search, sanitizeOptions);
+    querySearch = cleanSearch
+    cleanSearchOption = sanitizeHtml(searchoption, sanitizeOptions);
     listResults = [];
     if (searchoption === "name") {
-      listResults = listArr.filter((item) => item.name.includes(search));
+      listResults = listArr.filter((item) => item.name.includes(cleanSearch));
     } else if (searchoption === "note") {
-      listResults = listArr.filter((item) => item.note.includes(search));
+      listResults = listArr.filter((item) => item.note.includes(cleanSearch));
     }
   
-    res.redirect(`/search?q=${searchoption}`);
+    res.redirect(`/search?q=${cleanSearchOption}`);
   });
 
 app.listen(3000, () => {
