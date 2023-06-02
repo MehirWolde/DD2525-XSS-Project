@@ -4,7 +4,7 @@
     display: flex;
 }
 
-.page-half{
+.page-half, .page-half-grey{
     height: 100%;
     width: 50%;
     display: flex;
@@ -13,7 +13,11 @@
     align-items: center;
 }
 
-.input-field{
+.page-half-grey{
+    background: #f2f2f2;
+}
+
+.item-field, .name-field{
     width: 300px;
     height: 100px;
     background: #ffffff;
@@ -22,6 +26,21 @@
     padding: 12px 20px;
     text-align: left;
     box-sizing: border-box;
+}
+
+.name-field{
+    height: 40px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+button{
+    width: 100px;
+    height: 30px;
 }
 
 .cardtext-input{
@@ -34,4 +53,28 @@
     text-align: left;
     vertical-align: top;
     box-sizing: border-box;
-  }
+}
+
+.search-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.search-input{
+    width: 500px;
+    height: 50px;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #bcbcbc;
+    padding: 12px 20px;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+}

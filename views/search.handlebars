@@ -1,4 +1,23 @@
 <div class="search-page">
-  <h1>Search Page</h1>
-  <input placeholder="Search..." />
+  <div>
+    <h1>Search Page</h1>
+    <form method="POST" action="/search">
+      <input placeholder="Search..." name="search" class="search-input" />
+      <select name="searchoption">
+        <option name="name">Name</option>
+        <option name="item">Item</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <div>
+    Your search for the {{{search}}} returned {{{count}}} results.
+    {{#if results}}
+      <div class="search-list">
+        {{#each results}}
+          <div> Name: {{{this.name}}} Note: {{{this.item}}}</div>
+        {{/each}}
+      </div>
+    {{/if}}
+  </div>
 </div>

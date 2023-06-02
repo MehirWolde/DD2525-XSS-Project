@@ -1,24 +1,30 @@
 <div class="page-container">
   <div class="page-half">
     <form method="POST" action="/add">
+      <input 
+        type="text"
+        name="name"
+        placeholder="Enter your name..."
+        class="name-field"
+      />
       <input
         type="text"
         name="item"
-        placeholder="Add a list item..."
-        class="input-field"
+        placeholder="Add note to your booking..."
+        class="item-field"
       />
       <button type="submit">Submit</button>
     </form>
   </div>
 
-  <div class="page-half">
-    <h1>List items</h1>
-    <div>
-      <ul>
+  <div class="page-half-grey">
+    <h1>Booking list</h1>
+    <div class="booking-list">
+      
         {{#each list}}
-          <li>{{{this}}}</li>
+          <div> Name: {{{this.name}}} Note: {{{this.item}}}</div>
         {{/each}}
-      </ul>
+     
     </div>
   </div>
 </div>
