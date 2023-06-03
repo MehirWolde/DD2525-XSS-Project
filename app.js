@@ -10,6 +10,10 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+
+/*const easyWaf = require('easy-waf');
+app.use(easyWaf());
+
 const sanitizeHtml = require("sanitize-html");
 
 const sanitizeOptions = {       //these are the options for sanitizing html, we should make it more specific
@@ -21,7 +25,7 @@ const sanitizeOptions = {       //these are the options for sanitizing html, we 
 }
 
 
-/* const crypto = require('crypto'); // nodejs package for generating random nonce values
+const crypto = require('crypto'); // nodejs package for generating random nonce values
 let nonce = crypto.randomBytes(16).toString('base64');
 
 // start sidan ska vara att man har en text box och det man skriver in ska sparas i databas och visas på sidan
@@ -44,34 +48,36 @@ app.get("/", (req, res) => {
 
 app.post("/add", (req, res) => {
   const item = req.body;
-  cleanName = sanitizeHtml(item.name, sanitizeOptions);
+  /* cleanName = sanitizeHtml(item.name, sanitizeOptions);
   cleanNote = sanitizeHtml(item.note, sanitizeOptions);
-  listArr.push({ name: cleanName, note: cleanNote});
+  listArr.push({ name: cleanName, note: cleanNote}); */
+  listArr.push(item);
   res.redirect("/");
 });
 
 app.get("/search", (req, res) => {
   if (req.query.q) {
-    query = sanitizeHtml(req.query.q, sanitizeOptions);
-    res.render("search", { results: listResults, search: query, count: listResults.length, querySearch: querySearch });
+    /* query = sanitizeHtml(req.query.q, sanitizeOptions); */
+    res.render("search", { results: listResults, search: req.query.q, count: listResults.length, querySearch: querySearch });
   } else {
     res.render("search");
   }
 });
 
 app.post("/search", (req, res) => {
-    const { search, searchoption } = req.body;
-    cleanSearch = sanitizeHtml(search, sanitizeOptions);
+    const { search, searchOption } = req.body;
+    /* cleanSearch = sanitizeHtml(search, sanitizeOptions);
     querySearch = cleanSearch
-    cleanSearchOption = sanitizeHtml(searchoption, sanitizeOptions);
+    cleanSearchOption = sanitizeHtml(searchoption, sanitizeOptions); */
+    querySearch = search
     listResults = [];
-    if (searchoption === "name") {
-      listResults = listArr.filter((item) => item.name.includes(cleanSearch));
-    } else if (searchoption === "note") {
-      listResults = listArr.filter((item) => item.note.includes(cleanSearch));
+    if (searchOption === "name") {
+      listResults = listArr.filter((item) => item.name.includes(search));
+    } else if (searchOption === "note") {
+      listResults = listArr.filter((item) => item.note.includes(search));
     }
   
-    res.redirect(`/search?q=${cleanSearchOption}`);
+    res.redirect(`/search?q=${searchOption}`);
   });
 
 app.listen(3000, () => {

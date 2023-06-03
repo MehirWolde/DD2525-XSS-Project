@@ -3,7 +3,7 @@
     <h1>Search Page</h1>
     <form method="POST" action="/search">
       <input placeholder="Search..." name="search" class="search-input" />
-      <select name="searchoption">
+      <select name="searchOption">
         <option name="name">name</option>   <!-- By changing this value to a script and submitting, it will allow for an XSS attack-->
         <option name="item">note</option>
       </select>
@@ -11,7 +11,7 @@
     </form>
   </div>
   <div>
-    Your search for the {{{search}}} {{querySearch}} returned {{{count}}} results.    <!-- By changing the query you can enable a XSS here as well-->
+    Your search for the {{{search}}} {{{querySearch}}} returned {{{count}}} results.    <!-- By changing the query you can enable a XSS here as well-->
     {{#if results}}
       <div class="search-list">
         {{#each results}}

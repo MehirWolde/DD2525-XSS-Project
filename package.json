@@ -11,9 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.1.3",
+    "easy-waf": "^0.4.1",
     "express": "^4.18.2",
     "express-handlebars": "^7.0.7",
-    "express-waf-middleware": "0.0.4",
+    "express-waf-middleware": "^0.0.4",
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.2",
     "nodemon": "^2.0.22",
