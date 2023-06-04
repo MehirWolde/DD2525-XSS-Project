@@ -8,14 +8,28 @@ app.set("view engine", "handlebars");
 
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static("public"));
 
 
-/*const easyWaf = require('easy-waf');
+/*
+ * The code below creates a middleware using the npm package easy-waf.
+ * This middleware sets up a simple web application firewall to protect against
+ * common web attacks but is mostly used in this case for XSS attacks.
+ */
+
+/*
+const easyWaf = require('easy-waf');
 app.use(easyWaf());
+*/
 
-const sanitizeHtml = require("sanitize-html");
+/*
+ * The code below is used to create an instance of the sanitizer. 
+ * This is used to clean "dirty" user input which could contain XSS attacks.
+ * We set certain options to only allow certain HTML tags and attributes.
+ */
 
+/* const sanitizeHtml = require("sanitize-html");
 const sanitizeOptions = {       //these are the options for sanitizing html, we should make it more specific
     allowedTags: ["b", "i", "em", "strong", "a"],
     allowedAttributes: {
@@ -23,19 +37,24 @@ const sanitizeOptions = {       //these are the options for sanitizing html, we 
     },
     allowedIframeHostnames: ["www.youtube.com"] //allow iframes with youtube videos
 }
+ */
 
-
-const crypto = require('crypto'); // nodejs package for generating random nonce values
-let nonce = crypto.randomBytes(16).toString('base64');
-
-// start sidan ska vara att man har en text box och det man skriver in ska sparas i databas och visas på sidan
-app.use((req, res, next) => {       // middleware using csp with nonce values for script-src
+/*
+ * The code below is used to set the middleware for the Content Security Policy
+ * It uses a nonce for the script-src directive, which is set in the HTML template
+ * The handlebars can then access the nonce through the res.locals object which is passed
+ * though the middleware
+*/
+/* const crypto = require('crypto'); 
+app.use((req, res, next) => {
+    let nonce = crypto.randomBytes(16).toString('base64');
+    res.locals.cspNonce = nonce; 
     res.set({
-        'Content-Security-Policy':      // set to report only during dev
-        `default-src 'self'; script-src 'nonce-${nonce}'`
+        'Content-Security-Policy':
+        `default-src 'self'; script-src 'nonce-${nonce}'`  
     });
     next();
-}); */
+});  */
 
 
 let listArr = [];
@@ -48,16 +67,14 @@ app.get("/", (req, res) => {
 
 app.post("/add", (req, res) => {
   const item = req.body;
-  /* cleanName = sanitizeHtml(item.name, sanitizeOptions);
-  cleanNote = sanitizeHtml(item.note, sanitizeOptions);
-  listArr.push({ name: cleanName, note: cleanNote}); */
   listArr.push(item);
   res.redirect("/");
 });
 
 app.get("/search", (req, res) => {
   if (req.query.q) {
-    /* query = sanitizeHtml(req.query.q, sanitizeOptions); */
+    // query = sanitizeHtml(req.query.q, sanitizeOptions); 
+    // res.render("search", { results: listResults, search: query, count: listResults.length, querySearch: querySearch });
     res.render("search", { results: listResults, search: req.query.q, count: listResults.length, querySearch: querySearch });
   } else {
     res.render("search");
