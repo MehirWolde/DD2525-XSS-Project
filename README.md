@@ -12,7 +12,7 @@ To run the application either run: `npm run dev` or `node app`
 ## Testing the web application firewall
 To test out the web application firewall, remove the comments around lines 22 and 23 where the package instance (easy-waf) and middleware is commented out.
 
-This will enable the firewall against all requests and can be tested against different XSS attacks. For example a simple test can be inserting the script "<script>alert('hi');</script>" in the name or note field of the start page.
+This will enable the firewall against all requests and can be tested against different XSS attacks. For example a simple test can be inserting the script `<script>alert('hi');</script>` in the name or note field of the start page.
 
 ## Testing out the sanitizer
 To test out the sanitizer, remove the comments around line 33 to 39 where the santizer and its whitelisted options are.
